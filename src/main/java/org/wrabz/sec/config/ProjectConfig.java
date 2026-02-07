@@ -33,7 +33,7 @@ public class ProjectConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
