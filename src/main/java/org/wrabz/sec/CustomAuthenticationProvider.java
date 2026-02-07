@@ -1,6 +1,7 @@
 package org.wrabz.sec;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 
 import java.util.Arrays;
 
+@Configuration
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override

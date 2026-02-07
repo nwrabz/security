@@ -10,31 +10,22 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.wrabz.sec.CustomAuthenticationProvider;
 
 @Configuration
 public class ProjectConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        var userDetailsService = new InMemoryUserDetailsManager();
+    private final CustomAuthenticationProvider authenticationProvider;
 
-        var user = User.withUsername("user")
-                .password(encoder.encode("password"))
-                .authorities("read")
-                .build();
-        userDetailsService.createUser(user);
-
-        return userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public ProjectConfig(CustomAuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.httpBasic(Customizer.withDefaults())
+        http
+                .authenticationProvider(authenticationProvider)
+                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
                                 .anyRequest()
