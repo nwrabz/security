@@ -1,5 +1,6 @@
 package org.wrabz.sec.security;
 
+import lombok.AllArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +9,10 @@ import org.wrabz.sec.model.User;
 import java.util.Collection;
 import java.util.List;
 
+@AllArgsConstructor
 public class SecurityUser implements UserDetails {
 
     private final User user;
-
-    public SecurityUser(User user) {
-        this.user = user;
-    }
 
 
     @Override
