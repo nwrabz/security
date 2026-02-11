@@ -5,14 +5,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class HelloController {
+@Configuration
+public class ProjectConfig {
 
-    @GetMapping("/hello")
-    public String hello() throws  Exception {
-            return "Hello World!";
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
     }
 }
