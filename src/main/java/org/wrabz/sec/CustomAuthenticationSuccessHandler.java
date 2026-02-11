@@ -27,6 +27,7 @@ implements AuthenticationSuccessHandler {
         if (auth.isPresent()) {
             response
                     .sendRedirect("/home");
+            response.setHeader("Location", request.getRequestURL().toString());
         } else {
             response.sendRedirect("/error");
         }
