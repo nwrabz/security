@@ -1,6 +1,7 @@
 package org.wrabz.sec.controller;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.concurrent.DelegatingSecurityContextCallable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,17 +25,10 @@ public class HelloController {
 
         ExecutorService executor = Executors.newCachedThreadPool();
         try {
-            return "Hello, " + executor.submit(task).get() + "!";
+            var contextTask = new DelegatingSecurityContextCallable<>(task);
+            return "Hello, " + executor.submit(contextTask).get() + "!";
         } finally {
             executor.shutdown();
         }
-    }
-
-    @GetMapping("/bye")
-    @Async
-    public void goodbye() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        String username = context.getAuthentication().getName();
-        // do something with the username
     }
 }
