@@ -2,6 +2,7 @@ package org.wrabz.sec.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -22,11 +23,11 @@ public class ProjectConfig {
 
         var user1 = User.withUsername("user1")
                 .password("password")
-                .roles("READ")
+                .authorities("READ")
                 .build();
         var user2 = User.withUsername("user2")
                 .password("password")
-                .roles("WRITE")
+                .authorities("WRITE")
                 .build();
 
         userDetailsService.createUser(user1);
@@ -46,7 +47,17 @@ public class ProjectConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth.anyRequest()
-                                .hasAuthority("WRITE"));
+                                .access((authentication, context) -> {
+                                    boolean allowed = authentication.get()
+                                            .getAuthorities()
+                                            .stream()
+                                            .anyMatch(a -> a.getAuthority().equals("WRITE"));
+
+                                    return new AuthorizationDecision(allowed);
+                                })
+                );
+
+
         return http.build();
     }
 }
