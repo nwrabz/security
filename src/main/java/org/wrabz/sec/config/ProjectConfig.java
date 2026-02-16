@@ -46,11 +46,9 @@ public class ProjectConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .anyRequest()
-                                .hasRole("ADMIN")
+                                .requestMatchers("hello").hasRole("ADMIN")
+                                .requestMatchers("/ciao").hasRole("MANAGER")
                 );
-
-
         return http.build();
     }
 }
