@@ -7,7 +7,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -23,11 +22,11 @@ public class ProjectConfig {
 
         var user1 = User.withUsername("user1")
                 .password("password")
-                .authorities("READ")
+                .authorities("ROLE_ADMIN")
                 .build();
         var user2 = User.withUsername("user2")
                 .password("password")
-                .authorities("WRITE")
+                .authorities("ROLE_MANAGER")
                 .build();
 
         userDetailsService.createUser(user1);
@@ -46,7 +45,8 @@ public class ProjectConfig {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
-                        auth.anyRequest()
+                        auth
+                                .anyRequest()
                                 .access((authentication, context) -> {
                                     boolean allowed = authentication.get()
                                             .getAuthorities()
