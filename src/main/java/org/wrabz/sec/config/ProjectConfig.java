@@ -22,7 +22,7 @@ public class ProjectConfig {
 
         var user1 = User.withUsername("user1")
                 .password("password")
-                .authorities("ROLE_ADMIN")
+                .roles("ADMIN")
                 .build();
         var user2 = User.withUsername("user2")
                 .password("password")
@@ -47,14 +47,7 @@ public class ProjectConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .anyRequest()
-                                .access((authentication, context) -> {
-                                    boolean allowed = authentication.get()
-                                            .getAuthorities()
-                                            .stream()
-                                            .anyMatch(a -> a.getAuthority().equals("WRITE"));
-
-                                    return new AuthorizationDecision(allowed);
-                                })
+                                .hasRole("ADMIN")
                 );
 
 
