@@ -51,6 +51,7 @@ public class ProjectConfig {
                                 .requestMatchers(HttpMethod.GET, "/a").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/a").permitAll()
                                 .requestMatchers("/error").permitAll()
+                                .requestMatchers("/a/b/**").authenticated()
                                 .anyRequest()
                                 .denyAll()// .authenticated()
                 );

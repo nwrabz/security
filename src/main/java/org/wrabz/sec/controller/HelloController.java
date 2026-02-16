@@ -23,4 +23,9 @@ public class HelloController {
     public String getEndpointC() {
         return "Works!";
     }
+
+    @GetMapping("/error")
+    public String error() {
+        return "Error";
+    }
 }
