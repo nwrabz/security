@@ -48,6 +48,7 @@ public class ProjectConfig {
                         auth
                                 .requestMatchers("/hello").hasRole("ADMIN")
                                 .requestMatchers("/ciao").hasRole("MANAGER")
+                                .anyRequest().permitAll()
                 );
         return http.build();
     }
