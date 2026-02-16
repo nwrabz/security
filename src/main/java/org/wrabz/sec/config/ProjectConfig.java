@@ -2,6 +2,7 @@ package org.wrabz.sec.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,11 +45,14 @@ public class ProjectConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/hello").hasRole("ADMIN")
-                                .requestMatchers("/ciao").hasRole("MANAGER")
-                                .anyRequest().permitAll()
+                                .requestMatchers(HttpMethod.GET, "/a").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/a").permitAll()
+                                .requestMatchers("/error").permitAll()
+                                .anyRequest()
+                                .denyAll()// .authenticated()
                 );
         return http.build();
     }
