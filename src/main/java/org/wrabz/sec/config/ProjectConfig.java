@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 @Configuration
 public class ProjectConfig {
@@ -45,12 +46,11 @@ public class ProjectConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(Customizer.withDefaults())
-                .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers("/product/{code:^[0-9]*$}")
-                                .permitAll()
-                                .anyRequest()
-                                .denyAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(new RegexRequestMatcher(".*/(us|uk|ca)/(en|fr).*", null))
+                        .authenticated()
+                        .anyRequest()
+                        .hasAuthority("premium")
                 );
         return http.build();
     }
