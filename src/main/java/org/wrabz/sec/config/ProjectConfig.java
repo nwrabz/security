@@ -45,15 +45,12 @@ public class ProjectConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(HttpMethod.GET, "/a").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/a").permitAll()
-                                .requestMatchers("/error").permitAll()
-                                .requestMatchers("/a/b/**").authenticated()
+                                .requestMatchers("/product/{code:^[0-9]*$}")
+                                .permitAll()
                                 .anyRequest()
-                                .denyAll()// .authenticated()
+                                .denyAll()
                 );
         return http.build();
     }
