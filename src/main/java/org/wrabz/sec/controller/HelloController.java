@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping("/video/{country}/{language}")
-    public String video(@PathVariable String country,
-                        @PathVariable String language) {
-        return "Video allowed for " + country + " " + language;
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello!";
     }
 }
