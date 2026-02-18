@@ -11,6 +11,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.wrabz.sec.filter.AuthenticationLoggingFilter;
 import org.wrabz.sec.filter.RequestValidationFilter;
 
 @Configuration
@@ -46,6 +47,10 @@ public class ProjectConfig {
         http
                 .addFilterBefore(
                         new RequestValidationFilter(),
+                        BasicAuthenticationFilter.class
+                )
+                .addFilterAfter(
+                        new AuthenticationLoggingFilter(),
                         BasicAuthenticationFilter.class
                 )
                 .authorizeHttpRequests(auth -> auth
