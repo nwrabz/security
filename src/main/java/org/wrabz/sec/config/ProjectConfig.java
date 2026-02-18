@@ -12,7 +12,9 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.wrabz.sec.filter.RequestValidationFilter;
 
 @Configuration
 public class ProjectConfig {
@@ -45,7 +47,10 @@ public class ProjectConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic(Customizer.withDefaults())
+                .addFilterBefore(
+                        new RequestValidationFilter(),
+                        BasicAuthenticationFilter.class
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new RegexRequestMatcher(".*/(us|uk|ca)/(en|fr).*", null))
                         .authenticated()
