@@ -28,7 +28,7 @@ public class ProjectConfig {
                 .build();
         var user2 = User.withUsername("user2")
                 .password("password")
-                .authorities("ROLE_MANAGER")
+                .authorities("read", "premium")
                 .build();
 
         userDetailsService.createUser(user1);
