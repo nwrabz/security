@@ -30,6 +30,7 @@ public class ProjectConfig {
         http
                 .addFilterAt(filter,//Add the filter at the position of Basic Authentication filter
                         BasicAuthenticationFilter.class)
+                /*
                 .addFilterBefore(
                         new RequestValidationFilter(),
                         BasicAuthenticationFilter.class
@@ -37,7 +38,7 @@ public class ProjectConfig {
                 .addFilterAfter(
                         new AuthenticationLoggingFilter(),
                         BasicAuthenticationFilter.class
-                )
+                ) */
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest()
                         .permitAll()
